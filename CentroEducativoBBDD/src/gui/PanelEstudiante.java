@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import javax.swing.JToolBar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class PanelEstudiante extends JPanel {
 	
@@ -53,7 +54,8 @@ public class PanelEstudiante extends JPanel {
 		JButton btnSiguiente = new JButton(">");
 		toolBar.add(btnSiguiente);
 		
-		JButton btnUltimo = new JButton(">>");
+		JButton btnUltimo = new JButton("");
+		btnUltimo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/next_29420.png")));
 		toolBar.add(btnUltimo);
 		
 		JButton btnGuardar = new JButton("Guardar");
