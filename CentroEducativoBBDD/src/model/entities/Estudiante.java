@@ -1,4 +1,4 @@
-package model;
+package model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -33,9 +33,9 @@ public class Estudiante implements Serializable {
 
 	private String telefono;
 
-	//bi-directional many-to-one association to Valoracionmateria
+	//bi-directional many-to-one association to ValoracionMateria
 	@OneToMany(mappedBy="estudiante")
-	private List<Valoracionmateria> valoracionmaterias;
+	private List<ValoracionMateria> valoracionmaterias;
 
 	public Estudiante() {
 	}
@@ -104,22 +104,22 @@ public class Estudiante implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public List<Valoracionmateria> getValoracionmaterias() {
+	public List<ValoracionMateria> getValoracionmaterias() {
 		return this.valoracionmaterias;
 	}
 
-	public void setValoracionmaterias(List<Valoracionmateria> valoracionmaterias) {
+	public void setValoracionmaterias(List<ValoracionMateria> valoracionmaterias) {
 		this.valoracionmaterias = valoracionmaterias;
 	}
 
-	public Valoracionmateria addValoracionmateria(Valoracionmateria valoracionmateria) {
+	public ValoracionMateria addValoracionmateria(ValoracionMateria valoracionmateria) {
 		getValoracionmaterias().add(valoracionmateria);
 		valoracionmateria.setEstudiante(this);
 
 		return valoracionmateria;
 	}
 
-	public Valoracionmateria removeValoracionmateria(Valoracionmateria valoracionmateria) {
+	public ValoracionMateria removeValoracionmateria(ValoracionMateria valoracionmateria) {
 		getValoracionmaterias().remove(valoracionmateria);
 		valoracionmateria.setEstudiante(null);
 
