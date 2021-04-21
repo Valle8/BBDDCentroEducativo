@@ -6,9 +6,13 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
+
+import model.entities.TipologiaSexo;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class PanelEjemplo extends JPanel {
 	private JTextField jtfId;
@@ -27,6 +31,8 @@ public class PanelEjemplo extends JPanel {
 	private JButton btnGuardar;
 	private JButton btnNuevo;
 	private JButton btnBorrar;
+	private JLabel lblSexo;
+	private JComboBox jcbSexo;
 	
 
 
@@ -39,7 +45,7 @@ public class PanelEjemplo extends JPanel {
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblId = new JLabel("Id: ");
@@ -178,6 +184,21 @@ public class PanelEjemplo extends JPanel {
 		add(jtfTelefono, gbc_jtfTelefono);
 		jtfTelefono.setColumns(10);
 		
+		lblSexo = new JLabel("Sexo: ");
+		GridBagConstraints gbc_lblSexo = new GridBagConstraints();
+		gbc_lblSexo.anchor = GridBagConstraints.EAST;
+		gbc_lblSexo.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSexo.gridx = 0;
+		gbc_lblSexo.gridy = 8;
+		add(lblSexo, gbc_lblSexo);
+		
+		jcbSexo = new JComboBox();
+		GridBagConstraints gbc_jcbSexo = new GridBagConstraints();
+		gbc_jcbSexo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jcbSexo.gridx = 1;
+		gbc_jcbSexo.gridy = 8;
+		add(jcbSexo, gbc_jcbSexo);
+		
 
 	}
 
@@ -275,6 +296,18 @@ public class PanelEjemplo extends JPanel {
 
 	public void setTelefono(String telefono) {
 		this.jtfTelefono.setText(telefono);
+	}
+
+
+
+	public TipologiaSexo getSexo() {
+		return  (TipologiaSexo) this.jcbSexo.getSelectedItem();
+	}
+
+
+
+	public void setSexo(String sexo) {
+		this.jcbSexo.setSelectedItem(sexo);
 	}
 
 }

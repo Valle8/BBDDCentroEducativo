@@ -7,10 +7,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import model.entities.TipologiaSexo;
 
-public class ControladorCoche {
 
-	private static ControladorCoche instance = null;
+public class ControladorTipologia {
+
+	private static ControladorTipologia instance = null;
 
 	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("JPACoches"); 
 	
@@ -18,9 +20,9 @@ public class ControladorCoche {
 	 * 
 	 * @return
 	 */
-	public static ControladorCoche getInstance () {
+	public static ControladorTipologia getInstance () {
 		if (instance == null) {
-			instance = new ControladorCoche();
+			instance = new ControladorTipologia();
 		}
 		return instance;
 	}
@@ -28,7 +30,7 @@ public class ControladorCoche {
 	/**
 	 * 
 	 */
-	public ControladorCoche() {
+	public ControladorTipologia() {
 	}
 	
 	
@@ -36,74 +38,69 @@ public class ControladorCoche {
 	 * 
 	 * @return
 	 */
-	public Coche findPrimero () {
-		Coche c = null;
+	public TipologiaSexo findPrimero () {
+		TipologiaSexo c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from tutorialjavacoches.coche order by id limit 1", Coche.class);
-		c = (Coche) q.getSingleResult();
+		Query q = em.createNativeQuery("select * from centroeducativo.tipologiaSexo order by id limit 1", TipologiaSexo.class);
+		c = (TipologiaSexo) q.getSingleResult();
 		em.close();
 		
 		return c;
 	}
 	
-
 	/**
 	 * 
 	 * @return
 	 */
-	public Coche findUltimo () {
-		Coche c = null;
+	public TipologiaSexo findUltimo () {
+		TipologiaSexo c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from tutorialjavacoches.coche order by id desc limit 1", Coche.class);
-		c = (Coche) q.getSingleResult();
+		Query q = em.createNativeQuery("select * from centroeducativo.tipologiaSexo order by id desc limit 1", TipologiaSexo.class);
+		c = (TipologiaSexo) q.getSingleResult();
 		em.close();
 		
 		return c;
 	}
 	
-
 	/**
 	 * 
 	 * @return
 	 */
-	public Coche findSiguiente (int idActual) {
-		Coche c = null;
+	public TipologiaSexo findSiguiente (int idActual) {
+		TipologiaSexo c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from tutorialjavacoches.coche where id > ? order by id limit 1", Coche.class);
+		Query q = em.createNativeQuery("select * from centroeducativo.tipologiaSexo where id > ? order by id limit 1", TipologiaSexo.class);
 		q.setParameter(1, idActual);
-		c = (Coche) q.getSingleResult();
+		c = (TipologiaSexo) q.getSingleResult();
 		em.close();
 		
 		return c;
 	}
 	
-
 	/**
 	 * 
 	 * @return
 	 */
-	public Coche findAnterior (int idActual) {
-		Coche c = null;
+	public TipologiaSexo findAnterior (int idActual) {
+		TipologiaSexo c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from tutorialjavacoches.coche where id < ? order by id desc limit 1", Coche.class);
+		Query q = em.createNativeQuery("select * from centroeducativo.tipologiaSexo where id < ? order by id desc limit 1", TipologiaSexo.class);
 		q.setParameter(1, idActual);
-		c = (Coche) q.getSingleResult();
+		c = (TipologiaSexo) q.getSingleResult();
 		em.close();
 		
 		return c;		
 	}
 	
-
-	
 	/**
 	 * 
 	 * @return
 	 */
-	public boolean guardar (Coche c) {
+	public boolean guardar (TipologiaSexo c) {
 		try {
 			EntityManager em = factory.createEntityManager();
 			em.getTransaction().begin();
@@ -122,16 +119,13 @@ public class ControladorCoche {
 			return false;
 		}
 	}
-
-
-
 	
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public void borrar(Coche c) {
+	public void borrar(TipologiaSexo c) {
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
 		if (!em.contains(c)) {
@@ -141,20 +135,22 @@ public class ControladorCoche {
 		em.getTransaction().commit();
 		em.close();
 	}
-
+	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<Coche> findAll () {
+	public List<TipologiaSexo> findAll () {
 		EntityManager em = factory.createEntityManager();
 		
-		Query q = em.createNativeQuery("SELECT * FROM coche", Coche.class);
+		Query q = em.createNativeQuery("SELECT * FROM tipologiaSexo", TipologiaSexo.class);
 		
-		List<Coche> list = (List<Coche>) q.getResultList();
+		List<TipologiaSexo> list = (List<TipologiaSexo>) q.getResultList();
 		em.close();
 		return list;
 	}
+
+	
 	
 
 }

@@ -37,6 +37,11 @@ public class Profesor implements Serializable {
 	@OneToMany(mappedBy="profesor")
 	private List<ValoracionMateria> valoracionmaterias;
 
+	//bi-directional many-to-one association to TipologiaSexo
+	@ManyToOne
+	@JoinColumn(name="idTipologiaSexo")
+	private TipologiaSexo tipologiaSexo;
+
 	public Profesor() {
 	}
 
@@ -124,6 +129,14 @@ public class Profesor implements Serializable {
 		valoracionmateria.setProfesor(null);
 
 		return valoracionmateria;
+	}
+
+	public TipologiaSexo getTipologiaSexo() {
+		return this.tipologiaSexo;
+	}
+
+	public void setTipologiaSexo(TipologiaSexo tipologiaSexo) {
+		this.tipologiaSexo = tipologiaSexo;
 	}
 
 }

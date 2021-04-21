@@ -10,7 +10,13 @@ import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JToolBar;
+
+import model.Fabricante;
+import model.controllers.ControladorFabricante;
+import model.entities.TipologiaSexo;
+
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
@@ -75,6 +81,18 @@ public class PanelEstudiante extends JPanel {
 		
 		
 
+	}
+	
+	/**
+	 * 
+	 */
+	private void cargarDatosTipologia() {
+		List<TipologiaSexo> sexo = ControladorTipologia.getInstance().findAll();
+		
+		for (TipologiaSexo f : sexo) {
+			this.jcbFabricante.addItem(f);
+			this.pEj.getSexo().addItem(f);
+		}
 	}
 
 }

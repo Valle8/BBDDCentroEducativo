@@ -5,6 +5,7 @@
 		<class>model.entities.Estudiante</class>
 		<class>model.entities.Materia</class>
 		<class>model.entities.Profesor</class>
+		<class>model.entities.TipologiaSexo</class>
 		<class>model.entities.ValoracionMateria</class>
 	</persistence-unit>
 </persistence>
