@@ -25,7 +25,6 @@ public class Materia implements Serializable {
 
 	//bi-directional many-to-one association to Curso
 	@ManyToOne
-	@JoinColumn(name="curso_id")
 	private Curso curso;
 
 	//bi-directional many-to-one association to ValoracionMateria

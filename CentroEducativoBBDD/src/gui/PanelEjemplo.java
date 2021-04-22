@@ -7,12 +7,15 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 
+import model.controllers.ControladorTipologia;
 import model.entities.TipologiaSexo;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 
 public class PanelEjemplo extends JPanel {
 	private JTextField jtfId;
@@ -33,6 +36,9 @@ public class PanelEjemplo extends JPanel {
 	private JButton btnBorrar;
 	private JLabel lblSexo;
 	private JComboBox jcbSexo;
+	private JScrollPane scrollPane;
+	private JLabel lblFoto;
+	private JButton btnCambiaImagen;
 	
 
 
@@ -42,9 +48,9 @@ public class PanelEjemplo extends JPanel {
 	 */
 	public PanelEjemplo() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0,1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
@@ -58,12 +64,24 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfId = new JTextField();
 		GridBagConstraints gbc_jtfId = new GridBagConstraints();
-		gbc_jtfId.insets = new Insets(0, 0, 5, 0);
 		gbc_jtfId.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jtfId.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfId.gridx = 1;
 		gbc_jtfId.gridy = 0;
 		add(jtfId, gbc_jtfId);
 		jtfId.setColumns(10);
+		
+		scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 2;
+		gbc_scrollPane.gridy = 0;
+		gbc_scrollPane.gridheight = 3;
+		add(scrollPane, gbc_scrollPane);
+		
+		lblFoto = new JLabel("\"FOTO aqui\"");
+		scrollPane.setViewportView(lblFoto);
 		
 		JLabel lblNombre = new JLabel("Nombre: ");
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
@@ -75,7 +93,7 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfNombre = new JTextField();
 		GridBagConstraints gbc_jtfNombre = new GridBagConstraints();
-		gbc_jtfNombre.insets = new Insets(0, 0, 5, 0);
+		gbc_jtfNombre.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfNombre.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jtfNombre.gridx = 1;
 		gbc_jtfNombre.gridy = 1;
@@ -92,7 +110,7 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfPrimerApellido = new JTextField();
 		GridBagConstraints gbc_jtfPrimerApellido = new GridBagConstraints();
-		gbc_jtfPrimerApellido.insets = new Insets(0, 0, 5, 0);
+		gbc_jtfPrimerApellido.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfPrimerApellido.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jtfPrimerApellido.gridx = 1;
 		gbc_jtfPrimerApellido.gridy = 2;
@@ -109,12 +127,23 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfSegundoApellido = new JTextField();
 		GridBagConstraints gbc_jtfSegundoApellido = new GridBagConstraints();
-		gbc_jtfSegundoApellido.insets = new Insets(0, 0, 5, 0);
+		gbc_jtfSegundoApellido.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfSegundoApellido.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jtfSegundoApellido.gridx = 1;
 		gbc_jtfSegundoApellido.gridy = 3;
 		add(jtfSegundoApellido, gbc_jtfSegundoApellido);
 		jtfSegundoApellido.setColumns(10);
+		
+		btnCambiaImagen = new JButton("Cambiar Imagen");
+		btnCambiaImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		GridBagConstraints gbc_btnCambiaImagen = new GridBagConstraints();
+		gbc_btnCambiaImagen.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCambiaImagen.gridx = 2;
+		gbc_btnCambiaImagen.gridy = 3;
+		add(btnCambiaImagen, gbc_btnCambiaImagen);
 		
 		JLabel lblDNI = new JLabel("DNI: ");
 		GridBagConstraints gbc_lblDNI = new GridBagConstraints();
@@ -126,7 +155,7 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfDNI = new JTextField();
 		GridBagConstraints gbc_jtfDNI = new GridBagConstraints();
-		gbc_jtfDNI.insets = new Insets(0, 0, 5, 0);
+		gbc_jtfDNI.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfDNI.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jtfDNI.gridx = 1;
 		gbc_jtfDNI.gridy = 4;
@@ -143,8 +172,8 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfDireccion = new JTextField();
 		GridBagConstraints gbc_jtfDireccion = new GridBagConstraints();
-		gbc_jtfDireccion.insets = new Insets(0, 0, 5, 0);
 		gbc_jtfDireccion.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jtfDireccion.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfDireccion.gridx = 1;
 		gbc_jtfDireccion.gridy = 5;
 		add(jtfDireccion, gbc_jtfDireccion);
@@ -160,7 +189,7 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfEmail = new JTextField();
 		GridBagConstraints gbc_jtfEmail = new GridBagConstraints();
-		gbc_jtfEmail.insets = new Insets(0, 0, 5, 0);
+		gbc_jtfEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfEmail.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jtfEmail.gridx = 1;
 		gbc_jtfEmail.gridy = 6;
@@ -177,7 +206,7 @@ public class PanelEjemplo extends JPanel {
 		
 		jtfTelefono = new JTextField();
 		GridBagConstraints gbc_jtfTelefono = new GridBagConstraints();
-		gbc_jtfTelefono.insets = new Insets(0, 0, 5, 0);
+		gbc_jtfTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_jtfTelefono.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jtfTelefono.gridx = 1;
 		gbc_jtfTelefono.gridy = 7;
@@ -194,11 +223,13 @@ public class PanelEjemplo extends JPanel {
 		
 		jcbSexo = new JComboBox();
 		GridBagConstraints gbc_jcbSexo = new GridBagConstraints();
+		gbc_jcbSexo.insets = new Insets(0, 0, 0, 5);
 		gbc_jcbSexo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jcbSexo.gridx = 1;
 		gbc_jcbSexo.gridy = 8;
 		add(jcbSexo, gbc_jcbSexo);
 		
+		cargarDatosTipologia();
 
 	}
 
@@ -306,8 +337,19 @@ public class PanelEjemplo extends JPanel {
 
 
 
-	public void setSexo(String sexo) {
+	public void setSexo(TipologiaSexo sexo) {
 		this.jcbSexo.setSelectedItem(sexo);
+	}
+	
+	/**
+	 * 
+	 */
+	private void cargarDatosTipologia() {
+		List<TipologiaSexo> sexo = ControladorTipologia.getInstance().findAll();
+		
+		for (TipologiaSexo f : sexo) {
+			this.jcbSexo.addItem(f);
+		}
 	}
 
 }

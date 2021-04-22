@@ -14,7 +14,7 @@ public class ControladorEstudiante {
 
 	private static ControladorEstudiante instance = null;
 
-	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("JPACoches"); 
+	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("CentroEducativoBBDD"); 
 	
 	/**
 	 * 

@@ -11,8 +11,9 @@ import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JToolBar;
 
-import model.Fabricante;
-import model.controllers.ControladorFabricante;
+import model.controllers.ControladorEstudiante;
+import model.controllers.ControladorTipologia;
+import model.entities.Estudiante;
 import model.entities.TipologiaSexo;
 
 import java.awt.event.ActionListener;
@@ -21,8 +22,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 public class PanelEstudiante extends JPanel {
-	
+	Estudiante actual = new Estudiante();
 	PanelEjemplo pEj = new PanelEjemplo();
+	
 
 	/**
 	 * Create the panel.
@@ -58,6 +60,12 @@ public class PanelEstudiante extends JPanel {
 		toolBar.add(btnAnterior);
 		
 		JButton btnSiguiente = new JButton(">");
+		btnSiguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actual=ControladorEstudiante.getInstance().findSiguiente(actual.getId());
+				 cargarActualEnPantalla();
+			}
+		});
 		toolBar.add(btnSiguiente);
 		
 		JButton btnUltimo = new JButton("");
@@ -79,20 +87,29 @@ public class PanelEstudiante extends JPanel {
 		gbc_lblNewLabel.gridy = 1;
 		add(pEj, gbc_lblNewLabel);
 		
-		
+		this.actual = ControladorEstudiante.getInstance().findPrimero();
+		cargarActualEnPantalla();
 
 	}
+	
 	
 	/**
 	 * 
 	 */
-	private void cargarDatosTipologia() {
-		List<TipologiaSexo> sexo = ControladorTipologia.getInstance().findAll();
-		
-		for (TipologiaSexo f : sexo) {
-			this.jcbFabricante.addItem(f);
-			this.pEj.getSexo().addItem(f);
+	private void cargarActualEnPantalla() {
+		if (this.actual != null) {
+			pEj.setId(this.actual.getId());
+			pEj.setPrimerApellido(this.actual.getApellido1());
+			pEj.setSegundoApellido(this.actual.getApellido2());
+			pEj.setDireccion(this.actual.getDireccion());
+			pEj.setDni(this.actual.getDni());
+			pEj.setEmail(this.actual.getEmail());
+			pEj.setNombre(this.actual.getNombre());
+			pEj.setTelefono(this.actual.getTelefono());
+			pEj.setSexo(this.actual.getTipologiaSexo());
 		}
 	}
+	
+	
 
 }

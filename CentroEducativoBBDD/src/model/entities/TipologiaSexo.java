@@ -92,4 +92,11 @@ public class TipologiaSexo implements Serializable {
 		return profesor;
 	}
 
+	@Override
+	public String toString() {
+		return descripción;
+	}
+	
+	
+
 }
