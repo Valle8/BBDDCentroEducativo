@@ -2,19 +2,28 @@ package gui;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import model.controllers.ControladorTipologia;
 import model.entities.TipologiaSexo;
 
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 
 public class PanelEjemplo extends JPanel {
@@ -35,11 +44,12 @@ public class PanelEjemplo extends JPanel {
 	private JButton btnNuevo;
 	private JButton btnBorrar;
 	private JLabel lblSexo;
-	private JComboBox jcbSexo;
+	private JComboBox<TipologiaSexo> jcbSexo;
 	private JScrollPane scrollPane;
 	private JLabel lblFoto;
 	private JButton btnCambiaImagen;
-	
+	JFileChooser jfileChooser;
+	ImageIcon imagenbien;
 
 
 
@@ -137,6 +147,7 @@ public class PanelEjemplo extends JPanel {
 		btnCambiaImagen = new JButton("Cambiar Imagen");
 		btnCambiaImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				seleccionaFichero();
 			}
 		});
 		GridBagConstraints gbc_btnCambiaImagen = new GridBagConstraints();
@@ -338,18 +349,104 @@ public class PanelEjemplo extends JPanel {
 
 
 	public void setSexo(TipologiaSexo sexo) {
-		this.jcbSexo.setSelectedItem(sexo);
-	}
+        for (int i = 0; i < this.jcbSexo.getItemCount(); i++) {
+            if (sexo.getId() == this.jcbSexo.getItemAt(i).getId()) {
+                this.jcbSexo.setSelectedIndex(i);
+            }
+        }
+        this.jcbSexo.setSelectedItem(sexo);
+    }
 	
 	/**
 	 * 
 	 */
 	private void cargarDatosTipologia() {
 		List<TipologiaSexo> sexo = ControladorTipologia.getInstance().findAll();
-		
 		for (TipologiaSexo f : sexo) {
 			this.jcbSexo.addItem(f);
 		}
 	}
+	
+	
+	/**
+	 * 
+	 */
+	private void seleccionaFichero () {
+		this.jfileChooser = new JFileChooser();
+		
+		// Configurando el componente
+		
+		// Establecimiento de la carpeta de inicio
+		this.jfileChooser.setCurrentDirectory(new File("C:\\"));
+		
+		// Tipo de selecci�n que se hace en el di�logo
+		this.jfileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // S�lo selecciona ficheros
+		//this.jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // S�lo selecciona ficheros
+		//this.jfileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); // Selecciona ficheros y carpetas
+		
+		// Filtro del tipo de ficheros que puede abrir
+		this.jfileChooser.setFileFilter(new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "Archivos de texto *.png ";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+				if (f.isFile() &&( f.getAbsolutePath().endsWith(".jpg"))) 
+					return true;
+				return false;
+			}
+		});
+		
+		// Abro el di�logo para la elecci�n del usuario
+		int seleccionUsuario = jfileChooser.showOpenDialog(null);
+		
+		if (seleccionUsuario == JFileChooser.APPROVE_OPTION) {
+			File fichero = this.jfileChooser.getSelectedFile();
+			
+			String imagen = fichero.getAbsolutePath();
+			imagenbien = new ImageIcon(imagen.getBytes()); 
+			lblFoto = new JLabel(imagenbien);
+			scrollPane.setViewportView(lblFoto);
+			this.revalidate();
+			this.repaint();
+			
+			
+		}
+	}
+	
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
+	private String leerContenidoFicheroTexto (File f) {
+		if (f.isFile()) {
+			try {
+				FileReader fileReader = new FileReader(f);
+				BufferedReader bufferedReader = new BufferedReader(fileReader);
+		
+				StringBuffer sb = new StringBuffer();
+				String lineaDelFichero;
+		
+				// Lectura del fichero l�nea a l�nea
+				while ((lineaDelFichero = bufferedReader.readLine()) != null) {
+					sb.append(lineaDelFichero + "\n");
+				}
+				
+				return sb.toString();
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return "Imposible obtener el contenido del fichero";
+	}
+	
+	
+	
+	
 
 }

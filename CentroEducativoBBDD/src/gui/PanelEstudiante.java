@@ -48,6 +48,8 @@ public class PanelEstudiante extends JPanel {
 		JButton btnPrimero = new JButton("<<");
 		btnPrimero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				actual=ControladorEstudiante.getInstance().findPrimero();
+				 cargarActualEnPantalla();
 			}
 		});
 		toolBar.add(btnPrimero);
@@ -55,6 +57,8 @@ public class PanelEstudiante extends JPanel {
 		JButton btnAnterior = new JButton("<");
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				actual=ControladorEstudiante.getInstance().findAnterior(actual.getId());
+				 cargarActualEnPantalla();
 			}
 		});
 		toolBar.add(btnAnterior);
@@ -69,6 +73,12 @@ public class PanelEstudiante extends JPanel {
 		toolBar.add(btnSiguiente);
 		
 		JButton btnUltimo = new JButton("");
+		btnUltimo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actual=ControladorEstudiante.getInstance().findUltimo();
+				 cargarActualEnPantalla();
+			}
+		});
 		btnUltimo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/next_29420.png")));
 		toolBar.add(btnUltimo);
 		
