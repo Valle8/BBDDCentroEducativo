@@ -96,7 +96,5 @@ public class TipologiaSexo implements Serializable {
 	public String toString() {
 		return descripción;
 	}
-	
-	
 
 }

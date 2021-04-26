@@ -2,9 +2,13 @@ package gui;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Panel;
+
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
@@ -83,12 +87,27 @@ public class PanelEstudiante extends JPanel {
 		toolBar.add(btnUltimo);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				guardar();
+			}
+		});
 		toolBar.add(btnGuardar);
 		
 		JButton btnNuevo = new JButton("Nuevo");
+		btnNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vaciarCampos();
+			}
+		});
 		toolBar.add(btnNuevo);
 		
 		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				borrar();
+			}
+		});
 		toolBar.add(btnBorrar);
 		
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -117,7 +136,71 @@ public class PanelEstudiante extends JPanel {
 			pEj.setNombre(this.actual.getNombre());
 			pEj.setTelefono(this.actual.getTelefono());
 			pEj.setSexo(this.actual.getTipologiaSexo());
+			pEj.setImagen(this.actual.getImagen());
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void cargarDesdePantalla() {
+			this.actual.setId(pEj.getId());
+			this.actual.setApellido1(pEj.getPrimerApellido());
+			this.actual.setApellido2(pEj.getSegundoApellido());
+			this.actual.setDireccion(pEj.getDireccion());
+			this.actual.setDni(pEj.getDni());
+			this.actual.setEmail(pEj.getEmail());
+			this.actual.setTelefono(pEj.getTelefono());
+			this.actual.setNombre(pEj.getNombre());
+			this.actual.setTipologiaSexo(pEj.getSexo());
+			this.actual.setImagen(pEj.getImagen());
+	}
+	
+
+	/**
+	 * 
+	 */
+	private void vaciarCampos() {
+		pEj.jtfId.setText("0");
+		pEj.jtfPrimerApellido.setText("");
+		pEj.jtfSegundoApellido.setText("");
+		pEj.jtfDireccion.setText("");
+		pEj.jtfDNI.setText("");
+		pEj.jtfEmail.setText("");
+		pEj.jtfNombre.setText("");
+		pEj.jtfTelefono.setText("");
+		pEj.jcbSexo.setSelectedIndex(0);
+		pEj.setImagen(null);
+	}
+	
+
+	/**
+	 * 
+	 */
+	private void guardar () {
+		cargarDesdePantalla();
+		boolean resultado = ControladorEstudiante.getInstance().guardar(this.actual);
+		if (resultado == true && this.actual != null && this.actual.getId() > 0) {
+			pEj.jtfId.setText("" + this.actual.getId());
+			JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Error al guardar");
+		}
+	}
+	
+
+	/**
+	 * 
+	 */
+	private void borrar() {
+		String posiblesRespuestas[] = {"Sí","No"};
+		// En esta opci�n se utiliza un showOptionDialog en el que personalizo el icono mostrado
+		int opcionElegida = JOptionPane.showOptionDialog(null, "¿Desea eliminar?", "Gestión venta de coches", 
+		        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, posiblesRespuestas, posiblesRespuestas[1]);
+	    if(opcionElegida == 0) {
+	    	ControladorEstudiante.getInstance().borrar(this.actual);
+	    }
 	}
 	
 	
