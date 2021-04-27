@@ -1,7 +1,9 @@
 package gui;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.GridBagLayout;
@@ -10,7 +12,11 @@ import java.awt.Insets;
 import java.awt.Panel;
 
 import javax.swing.JButton;
+
+import java.awt.Color;
 import java.awt.FlowLayout;
+
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JToolBar;
@@ -21,6 +27,12 @@ import model.entities.Estudiante;
 import model.entities.TipologiaSexo;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -28,6 +40,8 @@ import javax.swing.ImageIcon;
 public class PanelEstudiante extends JPanel {
 	Estudiante actual = new Estudiante();
 	PanelEjemplo pEj = new PanelEjemplo();
+	JPopupMenu jpopupmenu;
+	
 	
 
 	/**
@@ -49,7 +63,8 @@ public class PanelEstudiante extends JPanel {
 		gbc_toolBar.gridy = 0;
 		add(toolBar, gbc_toolBar);
 		
-		JButton btnPrimero = new JButton("<<");
+		JButton btnPrimero = new JButton("");
+		btnPrimero.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/First.png")));
 		btnPrimero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				actual=ControladorEstudiante.getInstance().findPrimero();
@@ -58,7 +73,8 @@ public class PanelEstudiante extends JPanel {
 		});
 		toolBar.add(btnPrimero);
 		
-		JButton btnAnterior = new JButton("<");
+		JButton btnAnterior = new JButton("");
+		btnAnterior.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Before.png")));
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				actual=ControladorEstudiante.getInstance().findAnterior(actual.getId());
@@ -67,7 +83,8 @@ public class PanelEstudiante extends JPanel {
 		});
 		toolBar.add(btnAnterior);
 		
-		JButton btnSiguiente = new JButton(">");
+		JButton btnSiguiente = new JButton("");
+		btnSiguiente.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/After.png")));
 		btnSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				actual=ControladorEstudiante.getInstance().findSiguiente(actual.getId());
@@ -83,10 +100,11 @@ public class PanelEstudiante extends JPanel {
 				 cargarActualEnPantalla();
 			}
 		});
-		btnUltimo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/next_29420.png")));
+		btnUltimo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Last.png")));
 		toolBar.add(btnUltimo);
 		
-		JButton btnGuardar = new JButton("Guardar");
+		JButton btnGuardar = new JButton("");
+		btnGuardar.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Save.png")));
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				guardar();
@@ -94,7 +112,8 @@ public class PanelEstudiante extends JPanel {
 		});
 		toolBar.add(btnGuardar);
 		
-		JButton btnNuevo = new JButton("Nuevo");
+		JButton btnNuevo = new JButton("");
+		btnNuevo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Add.png")));
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				vaciarCampos();
@@ -102,7 +121,8 @@ public class PanelEstudiante extends JPanel {
 		});
 		toolBar.add(btnNuevo);
 		
-		JButton btnBorrar = new JButton("Borrar");
+		JButton btnBorrar = new JButton("");
+		btnBorrar.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Delete.png")));
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				borrar();
@@ -114,11 +134,14 @@ public class PanelEstudiante extends JPanel {
 		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 1;
+		gbc_toolBar.fill = GridBagConstraints.VERTICAL;
 		add(pEj, gbc_lblNewLabel);
 		
 		this.actual = ControladorEstudiante.getInstance().findPrimero();
 		cargarActualEnPantalla();
 
+
+		
 	}
 	
 	
@@ -137,6 +160,14 @@ public class PanelEstudiante extends JPanel {
 			pEj.setTelefono(this.actual.getTelefono());
 			pEj.setSexo(this.actual.getTipologiaSexo());
 			pEj.setImagen(this.actual.getImagen());
+			pEj.setColor(this.actual.getColor());
+			if (this.actual.getColor() != null) {
+				pEj.setBackground(Color.decode(this.actual.getColor()));
+			} else {
+				pEj.setBackground(Color.WHITE);
+			}
+			popUp();
+			
 		}
 	}
 	
@@ -154,6 +185,7 @@ public class PanelEstudiante extends JPanel {
 			this.actual.setNombre(pEj.getNombre());
 			this.actual.setTipologiaSexo(pEj.getSexo());
 			this.actual.setImagen(pEj.getImagen());
+			this.actual.setColor(pEj.getColor());
 	}
 	
 
@@ -171,6 +203,9 @@ public class PanelEstudiante extends JPanel {
 		pEj.jtfTelefono.setText("");
 		pEj.jcbSexo.setSelectedIndex(0);
 		pEj.setImagen(null);
+		pEj.setBackground(Color.WHITE);
+		pEj.jtfColor.setText("");
+		
 	}
 	
 
@@ -202,6 +237,70 @@ public class PanelEstudiante extends JPanel {
 	    	ControladorEstudiante.getInstance().borrar(this.actual);
 	    }
 	}
+	
+
+	private void popUp(){
+		jpopupmenu  = getPopUpMenu();
+		
+		// Evento para mostrar el men� en las coordenadas que correspondan
+		pEj.scrollPane.addMouseListener(new MouseAdapter() {
+
+	        @Override
+	        public void mousePressed(MouseEvent e) {
+	            showPopup(e);
+	        }
+
+	        @Override
+	        public void mouseReleased(MouseEvent e) {
+	            showPopup(e);
+	        }
+
+	        /**
+	         * M�todo llamado cuando se detecta el evento de rat�n, mostrar� el men�
+	         * @param e
+	         */
+	        private void showPopup(MouseEvent e) {
+	            if (e.isPopupTrigger()) {
+	            	jpopupmenu.show(e.getComponent(),
+	                        e.getX(), e.getY());
+	            }
+	        }
+	    });
+		pEj.scrollPane.add(jpopupmenu);
+	}
+	/**
+	 * 
+	 * @return
+	 */	
+	private JPopupMenu getPopUpMenu () {
+		JPopupMenu menu = new JPopupMenu();
+		int altura = 0;
+		int ancho = 0;
+		InputStream is = new ByteArrayInputStream(this.actual.getImagen());
+
+		 
+	     try {
+			BufferedImage newBi = ImageIO.read(is);
+			altura=newBi.getHeight();
+			ancho=newBi.getWidth();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	     if (this.actual.getImagen()!=null) {
+	    	 JMenuItem item = new JMenuItem("Dimensiones: " + altura + " x " + ancho);
+	    	 menu.add(item);
+		} else {
+			JMenuItem item = new JMenuItem("Dimensiones: Sin imagen" );
+			menu.add(item);
+		}
+		
+		 JMenuItem item2 = new JMenuItem("Cambiar Imagen");
+		menu.add(item2);
+		
+		
+		return menu;
+	}
+	
 	
 	
 

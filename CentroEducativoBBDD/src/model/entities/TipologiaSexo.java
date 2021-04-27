@@ -13,6 +13,12 @@ import java.util.List;
 @Table(name="tipologiaSexo")
 @NamedQuery(name="TipologiaSexo.findAll", query="SELECT t FROM TipologiaSexo t")
 public class TipologiaSexo implements Serializable {
+	
+	@Override
+	public String toString() {
+		return descripción;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -90,11 +96,6 @@ public class TipologiaSexo implements Serializable {
 		profesor.setTipologiaSexo(null);
 
 		return profesor;
-	}
-
-	@Override
-	public String toString() {
-		return descripción;
 	}
 
 }

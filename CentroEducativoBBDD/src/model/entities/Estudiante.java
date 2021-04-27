@@ -23,6 +23,8 @@ public class Estudiante implements Serializable {
 
 	private String apellido2;
 
+	private String color;
+
 	private String direccion;
 
 	private String dni;
@@ -69,6 +71,14 @@ public class Estudiante implements Serializable {
 
 	public void setApellido2(String apellido2) {
 		this.apellido2 = apellido2;
+	}
+
+	public String getColor() {
+		return this.color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getDireccion() {

@@ -1,10 +1,15 @@
 package gui;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+
 import java.awt.GridBagLayout;
 import java.awt.Image;
 
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
@@ -13,13 +18,21 @@ import javax.swing.filechooser.FileFilter;
 import model.controllers.ControladorTipologia;
 import model.entities.TipologiaSexo;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
+
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -51,6 +64,11 @@ public class PanelEjemplo extends JPanel {
 	private JButton btnCambiaImagen;
 	private byte[] imagenByte;
 	JFileChooser jfileChooser;
+	private JButton btnCambiaColor;
+	JColorChooser jColorChooser;
+	private JLabel lblColor;
+	public JTextField jtfColor;
+
 
 
 
@@ -60,9 +78,9 @@ public class PanelEjemplo extends JPanel {
 	public PanelEjemplo() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0,1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblId = new JLabel("Id: ");
@@ -89,7 +107,7 @@ public class PanelEjemplo extends JPanel {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 2;
 		gbc_scrollPane.gridy = 0;
-		gbc_scrollPane.gridheight = 3;
+		gbc_scrollPane.gridheight = 5;
 		add(scrollPane, gbc_scrollPane);
 		
 		lblFoto = new JLabel("");
@@ -145,18 +163,6 @@ public class PanelEjemplo extends JPanel {
 		gbc_jtfSegundoApellido.gridy = 3;
 		add(jtfSegundoApellido, gbc_jtfSegundoApellido);
 		jtfSegundoApellido.setColumns(10);
-		
-		btnCambiaImagen = new JButton("Cambiar Imagen");
-		btnCambiaImagen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				seleccionaFichero();
-			}
-		});
-		GridBagConstraints gbc_btnCambiaImagen = new GridBagConstraints();
-		gbc_btnCambiaImagen.insets = new Insets(0, 0, 5, 0);
-		gbc_btnCambiaImagen.gridx = 2;
-		gbc_btnCambiaImagen.gridy = 3;
-		add(btnCambiaImagen, gbc_btnCambiaImagen);
 		
 		JLabel lblDNI = new JLabel("DNI: ");
 		GridBagConstraints gbc_lblDNI = new GridBagConstraints();
@@ -229,21 +235,62 @@ public class PanelEjemplo extends JPanel {
 		lblSexo = new JLabel("Sexo: ");
 		GridBagConstraints gbc_lblSexo = new GridBagConstraints();
 		gbc_lblSexo.anchor = GridBagConstraints.EAST;
-		gbc_lblSexo.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSexo.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSexo.gridx = 0;
 		gbc_lblSexo.gridy = 8;
 		add(lblSexo, gbc_lblSexo);
 		
 		jcbSexo = new JComboBox();
 		GridBagConstraints gbc_jcbSexo = new GridBagConstraints();
-		gbc_jcbSexo.insets = new Insets(0, 0, 0, 5);
+		gbc_jcbSexo.insets = new Insets(0, 0, 5, 5);
 		gbc_jcbSexo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jcbSexo.gridx = 1;
 		gbc_jcbSexo.gridy = 8;
 		add(jcbSexo, gbc_jcbSexo);
 		
+		btnCambiaColor = new JButton("Color preferido: ");
+		btnCambiaColor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				seleccionaColor();
+			}
+		});
+		
+		btnCambiaImagen = new JButton("Cambiar Imagen");
+		btnCambiaImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				seleccionaFichero();
+			}
+		});
+		GridBagConstraints gbc_btnCambiaImagen = new GridBagConstraints();
+		gbc_btnCambiaImagen.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCambiaImagen.gridx = 2;
+		gbc_btnCambiaImagen.gridy = 8;
+		add(btnCambiaImagen, gbc_btnCambiaImagen);
+		
+		lblColor = new JLabel("Color: ");
+		GridBagConstraints gbc_lblColor = new GridBagConstraints();
+		gbc_lblColor.anchor = GridBagConstraints.EAST;
+		gbc_lblColor.insets = new Insets(0, 0, 0, 5);
+		gbc_lblColor.gridx = 0;
+		gbc_lblColor.gridy = 9;
+		add(lblColor, gbc_lblColor);
+		
+		jtfColor = new JTextField();
+		jtfColor.setColumns(10);
+		GridBagConstraints gbc_jtfColor = new GridBagConstraints();
+		gbc_jtfColor.insets = new Insets(0, 0, 0, 5);
+		gbc_jtfColor.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jtfColor.gridx = 1;
+		gbc_jtfColor.gridy = 9;
+		add(jtfColor, gbc_jtfColor);
+		GridBagConstraints gbc_btnCambiaColor = new GridBagConstraints();
+		gbc_btnCambiaColor.gridx = 2;
+		gbc_btnCambiaColor.gridy = 9;
+		add(btnCambiaColor, gbc_btnCambiaColor);
+		
 		cargarDatosTipologia();
-
+		
+		
 	}
 
 
@@ -365,6 +412,7 @@ public class PanelEjemplo extends JPanel {
 	
 	public void setImagen(byte[] imagen) {
 		JLabel lblN = new JLabel();
+		this.imagenByte=imagen;
 		if(imagen != null) {
 			ImageIcon image = new ImageIcon(imagen);
 			JLabel lbl = new JLabel(image);
@@ -377,6 +425,21 @@ public class PanelEjemplo extends JPanel {
 			scrollPane.repaint();
 		}
 		
+	}
+	
+
+	public String getColor() {
+		return this.jtfColor.getText();
+	}
+
+
+
+	public void setColor(String Color) {
+		if(Color != null) {
+			this.jtfColor.setText(Color);
+		} else {
+			this.jtfColor.setText("");
+		}
 	}
 	
 	/**
@@ -447,7 +510,20 @@ public class PanelEjemplo extends JPanel {
 		return new byte[] {};
 	}
 	
-
+	/**
+	 * 
+	 */
+	private void seleccionaColor () {
+		Color color = jColorChooser.showDialog(null, "Seleccione un Color", Color.gray);
+		// Si el usuario pulsa sobre aceptar, el color elegido no ser� nulo
+		if (color != null) {
+			String strColor = "#"+Integer.toHexString(color.getRGB()).substring(2);
+			this.jtfColor.setText(strColor);
+			this.setBackground(color);
+		}
+	}
+	
+	
 	
 	
 	
