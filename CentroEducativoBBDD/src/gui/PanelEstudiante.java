@@ -40,7 +40,7 @@ import javax.swing.ImageIcon;
 public class PanelEstudiante extends JPanel {
 	Estudiante actual = new Estudiante();
 	PanelEjemplo pEj = new PanelEjemplo();
-	JPopupMenu jpopupmenu;
+
 	
 	
 
@@ -166,7 +166,7 @@ public class PanelEstudiante extends JPanel {
 			} else {
 				pEj.setBackground(Color.WHITE);
 			}
-			popUp();
+				pEj.popUp();
 			
 		}
 	}
@@ -239,67 +239,6 @@ public class PanelEstudiante extends JPanel {
 	}
 	
 
-	private void popUp(){
-		jpopupmenu  = getPopUpMenu();
-		
-		// Evento para mostrar el men� en las coordenadas que correspondan
-		pEj.scrollPane.addMouseListener(new MouseAdapter() {
-
-	        @Override
-	        public void mousePressed(MouseEvent e) {
-	            showPopup(e);
-	        }
-
-	        @Override
-	        public void mouseReleased(MouseEvent e) {
-	            showPopup(e);
-	        }
-
-	        /**
-	         * M�todo llamado cuando se detecta el evento de rat�n, mostrar� el men�
-	         * @param e
-	         */
-	        private void showPopup(MouseEvent e) {
-	            if (e.isPopupTrigger()) {
-	            	jpopupmenu.show(e.getComponent(),
-	                        e.getX(), e.getY());
-	            }
-	        }
-	    });
-		pEj.scrollPane.add(jpopupmenu);
-	}
-	/**
-	 * 
-	 * @return
-	 */	
-	private JPopupMenu getPopUpMenu () {
-		JPopupMenu menu = new JPopupMenu();
-		int altura = 0;
-		int ancho = 0;
-		InputStream is = new ByteArrayInputStream(this.actual.getImagen());
-
-		 
-	     try {
-			BufferedImage newBi = ImageIO.read(is);
-			altura=newBi.getHeight();
-			ancho=newBi.getWidth();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	     if (this.actual.getImagen()!=null) {
-	    	 JMenuItem item = new JMenuItem("Dimensiones: " + altura + " x " + ancho);
-	    	 menu.add(item);
-		} else {
-			JMenuItem item = new JMenuItem("Dimensiones: Sin imagen" );
-			menu.add(item);
-		}
-		
-		 JMenuItem item2 = new JMenuItem("Cambiar Imagen");
-		menu.add(item2);
-		
-		
-		return menu;
-	}
 	
 	
 	

@@ -68,6 +68,7 @@ public class PanelEjemplo extends JPanel {
 	JColorChooser jColorChooser;
 	private JLabel lblColor;
 	public JTextField jtfColor;
+	JPopupMenu jpopupmenu;
 
 
 
@@ -523,10 +524,70 @@ public class PanelEjemplo extends JPanel {
 		}
 	}
 	
+	public void popUp(){
+		jpopupmenu  = getPopUpMenu();
+		
+		
+		// Evento para mostrar el men� en las coordenadas que correspondan
+		scrollPane.addMouseListener(new MouseAdapter() {
+
+	        @Override
+	        public void mousePressed(MouseEvent e) {
+	            showPopup(e);
+	        }
+
+	        @Override
+	        public void mouseReleased(MouseEvent e) {
+	            showPopup(e);
+	        }
+
+	        /**
+	         * M�todo llamado cuando se detecta el evento de rat�n, mostrar� el men�
+	         * @param e
+	         */
+	        private void showPopup(MouseEvent e) {
+	            if (e.isPopupTrigger()) {
+	            	jpopupmenu.show(e.getComponent(),
+	                        e.getX(), e.getY());
+	            }
+	        }
+	    });
+	}
 	
 	
-	
-	
-	
+	private JPopupMenu getPopUpMenu() {
+        JPopupMenu menu = new JPopupMenu();
+        
+        menu.add(itemCambiarImagen());
+        menu.addSeparator();
+        menu.add(itemDimensiones());        
+        return menu;
+    }
+    
+    private JMenuItem itemCambiarImagen() {
+        JMenuItem item = new JMenuItem("Cambiar Imagen");
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionaFichero();                
+            }
+        });
+        return item;
+    }
+
+    
+    private JMenuItem itemDimensiones() {
+        String texto ="";
+        ImageIcon imgIcon;
+        if(this.imagenByte != null) {
+             imgIcon = new ImageIcon(imagenByte);
+             texto ="Dimension: " + imgIcon.getIconHeight() + " x " + imgIcon.getIconWidth();
+        } else
+             texto ="No hay imagen";    
+        
+       JMenuItem item = new JMenuItem(texto);
+       return item;
+    }
+
 
 }

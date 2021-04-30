@@ -13,6 +13,12 @@ import java.util.List;
 @Table(name="profesor")
 @NamedQuery(name="Profesor.findAll", query="SELECT p FROM Profesor p")
 public class Profesor implements Serializable {
+	
+	@Override
+	public String toString() {
+		return apellido1 + " " + apellido2 + "," + nombre;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

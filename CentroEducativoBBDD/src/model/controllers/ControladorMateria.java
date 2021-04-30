@@ -8,12 +8,13 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import model.entities.Materia;
-import model.entities.Profesor;
 
 
-public class ControladorProfesor {
 
-	private static ControladorProfesor instance = null;
+
+public class ControladorMateria {
+
+	private static ControladorMateria instance = null;
 
 	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("CentroEducativoBBDD"); 
 	
@@ -21,9 +22,9 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public static ControladorProfesor getInstance () {
+	public static ControladorMateria getInstance () {
 		if (instance == null) {
-			instance = new ControladorProfesor();
+			instance = new ControladorMateria();
 		}
 		return instance;
 	}
@@ -31,7 +32,7 @@ public class ControladorProfesor {
 	/**
 	 * 
 	 */
-	public ControladorProfesor() {
+	public ControladorMateria() {
 	}
 	
 	
@@ -39,12 +40,12 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public Profesor findPrimero () {
-		Profesor c = null;
+	public Materia findPrimero () {
+		Materia c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from centroeducativo.profesor order by id limit 1", Profesor.class);
-		c = (Profesor) q.getSingleResult();
+		Query q = em.createNativeQuery("select * from centroeducativo.materia order by id limit 1", Materia.class);
+		c = (Materia) q.getSingleResult();
 		em.close();
 		
 		return c;
@@ -54,12 +55,12 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public Profesor findUltimo () {
-		Profesor c = null;
+	public Materia findUltimo () {
+		Materia c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from centroeducativo.profesor order by id desc limit 1", Profesor.class);
-		c = (Profesor) q.getSingleResult();
+		Query q = em.createNativeQuery("select * from centroeducativo.materia order by id desc limit 1", Materia.class);
+		c = (Materia) q.getSingleResult();
 		em.close();
 		
 		return c;
@@ -69,13 +70,13 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public Profesor findSiguiente (int idActual) {
-		Profesor c = null;
+	public Materia findSiguiente (int idActual) {
+		Materia c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from centroeducativo.profesor where id > ? order by id limit 1", Profesor.class);
+		Query q = em.createNativeQuery("select * from centroeducativo.materia where id > ? order by id limit 1", Materia.class);
 		q.setParameter(1, idActual);
-		c = (Profesor) q.getSingleResult();
+		c = (Materia) q.getSingleResult();
 		em.close();
 		
 		return c;
@@ -85,13 +86,13 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public Profesor findAnterior (int idActual) {
-		Profesor c = null;
+	public Materia findAnterior (int idActual) {
+		Materia c = null;
 		
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createNativeQuery("select * from centroeducativo.profesor where id < ? order by id desc limit 1", Profesor.class);
+		Query q = em.createNativeQuery("select * from centroeducativo.materia where id < ? order by id desc limit 1", Materia.class);
 		q.setParameter(1, idActual);
-		c = (Profesor) q.getSingleResult();
+		c = (Materia) q.getSingleResult();
 		em.close();
 		
 		return c;		
@@ -101,7 +102,7 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public boolean guardar (Profesor c) {
+	public boolean guardar (Materia c) {
 		try {
 			EntityManager em = factory.createEntityManager();
 			em.getTransaction().begin();
@@ -126,7 +127,7 @@ public class ControladorProfesor {
 	 * @param id
 	 * @return
 	 */
-	public void borrar(Profesor c) {
+	public void borrar(Materia c) {
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
 		if (!em.contains(c)) {
@@ -141,12 +142,12 @@ public class ControladorProfesor {
 	 * 
 	 * @return
 	 */
-	public List<Profesor> findAll () {
+	public List<Materia> findAll () {
 		EntityManager em = factory.createEntityManager();
 		
-		Query q = em.createNativeQuery("SELECT * FROM profesor", Profesor.class);
+		Query q = em.createNativeQuery("SELECT * FROM materia", Materia.class);
 		
-		List<Profesor> list = (List<Profesor>) q.getResultList();
+		List<Materia> list = (List<Materia>) q.getResultList();
 		em.close();
 		return list;
 	}
