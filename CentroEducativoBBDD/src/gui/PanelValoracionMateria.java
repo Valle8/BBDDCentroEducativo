@@ -18,11 +18,14 @@ import model.controllers.ControladorTipologia;
 import model.entities.Materia;
 import model.entities.Profesor;
 import model.entities.TipologiaSexo;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelValoracionMateria extends JPanel {
 
 	JComboBox<Materia> jcbMateria = new JComboBox();
 	JComboBox<Profesor> jcbProfesor = new JComboBox();
+	JScrollPane scrollPaneEstudiantes = new JScrollPane();
 	
 	/**
 	 * Create the panel.
@@ -68,6 +71,10 @@ public class PanelValoracionMateria extends JPanel {
 		add(jcbMateria, gbc_jcbMateria);
 		
 		JButton btnRefresca = new JButton("Refrescar estudiantes");
+		btnRefresca.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		GridBagConstraints gbc_btnRefresca = new GridBagConstraints();
 		gbc_btnRefresca.anchor = GridBagConstraints.EAST;
 		gbc_btnRefresca.insets = new Insets(0, 0, 5, 5);
@@ -75,7 +82,7 @@ public class PanelValoracionMateria extends JPanel {
 		gbc_btnRefresca.gridy = 2;
 		add(btnRefresca, gbc_btnRefresca);
 		
-		JScrollPane scrollPaneEstudiantes = new JScrollPane();
+		scrollPaneEstudiantes = new JScrollPane();
 		GridBagConstraints gbc_scrollPaneEstudiantes = new GridBagConstraints();
 		gbc_scrollPaneEstudiantes.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPaneEstudiantes.fill = GridBagConstraints.BOTH;
@@ -85,6 +92,10 @@ public class PanelValoracionMateria extends JPanel {
 		add(scrollPaneEstudiantes, gbc_scrollPaneEstudiantes);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
 		gbc_btnGuardar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnGuardar.anchor = GridBagConstraints.EAST;
