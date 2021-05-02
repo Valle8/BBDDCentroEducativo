@@ -21,10 +21,10 @@ import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JToolBar;
 
-import model.controllers.ControladorEstudiante;
+import model.controllers.ControladorProfesor;
 import model.controllers.ControladorTipologia;
-import model.entities.Estudiante;
-import model.entities.TipologiaSexo;
+import model.entities.Profesor;
+
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -37,8 +37,8 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
-public class PanelEstudiante extends JPanel {
-	Estudiante actual = new Estudiante();
+public class PanelProfesor extends JPanel {
+	Profesor actual = new Profesor();
 	PanelEjemplo pEj = new PanelEjemplo();
 
 	
@@ -47,7 +47,7 @@ public class PanelEstudiante extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelEstudiante() {
+	public PanelProfesor() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0};
@@ -64,30 +64,30 @@ public class PanelEstudiante extends JPanel {
 		add(toolBar, gbc_toolBar);
 		
 		JButton btnPrimero = new JButton("");
-		btnPrimero.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/First.png")));
+		btnPrimero.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/First.png")));
 		btnPrimero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				actual=ControladorEstudiante.getInstance().findPrimero();
+				actual=ControladorProfesor.getInstance().findPrimero();
 				 cargarActualEnPantalla();
 			}
 		});
 		toolBar.add(btnPrimero);
 		
 		JButton btnAnterior = new JButton("");
-		btnAnterior.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Before.png")));
+		btnAnterior.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/Before.png")));
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				actual=ControladorEstudiante.getInstance().findAnterior(actual.getId());
+				actual=ControladorProfesor.getInstance().findAnterior(actual.getId());
 				 cargarActualEnPantalla();
 			}
 		});
 		toolBar.add(btnAnterior);
 		
 		JButton btnSiguiente = new JButton("");
-		btnSiguiente.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/After.png")));
+		btnSiguiente.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/After.png")));
 		btnSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				actual=ControladorEstudiante.getInstance().findSiguiente(actual.getId());
+				actual=ControladorProfesor.getInstance().findSiguiente(actual.getId());
 				 cargarActualEnPantalla();
 			}
 		});
@@ -96,15 +96,15 @@ public class PanelEstudiante extends JPanel {
 		JButton btnUltimo = new JButton("");
 		btnUltimo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				actual=ControladorEstudiante.getInstance().findUltimo();
+				actual=ControladorProfesor.getInstance().findUltimo();
 				 cargarActualEnPantalla();
 			}
 		});
-		btnUltimo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Last.png")));
+		btnUltimo.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/Last.png")));
 		toolBar.add(btnUltimo);
 		
 		JButton btnGuardar = new JButton("");
-		btnGuardar.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Save.png")));
+		btnGuardar.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/Save.png")));
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				guardar();
@@ -113,7 +113,7 @@ public class PanelEstudiante extends JPanel {
 		toolBar.add(btnGuardar);
 		
 		JButton btnNuevo = new JButton("");
-		btnNuevo.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Add.png")));
+		btnNuevo.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/Add.png")));
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				vaciarCampos();
@@ -122,7 +122,7 @@ public class PanelEstudiante extends JPanel {
 		toolBar.add(btnNuevo);
 		
 		JButton btnBorrar = new JButton("");
-		btnBorrar.setIcon(new ImageIcon(PanelEstudiante.class.getResource("/gui/img/Delete.png")));
+		btnBorrar.setIcon(new ImageIcon(PanelProfesor.class.getResource("/gui/img/Delete.png")));
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				borrar();
@@ -137,7 +137,7 @@ public class PanelEstudiante extends JPanel {
 		gbc_toolBar.fill = GridBagConstraints.VERTICAL;
 		add(pEj, gbc_lblNewLabel);
 		
-		this.actual = ControladorEstudiante.getInstance().findPrimero();
+		this.actual = ControladorProfesor.getInstance().findPrimero();
 		cargarActualEnPantalla();
 
 
@@ -214,7 +214,7 @@ public class PanelEstudiante extends JPanel {
 	 */
 	private void guardar () {
 		cargarDesdePantalla();
-		boolean resultado = ControladorEstudiante.getInstance().guardar(this.actual);
+		boolean resultado = ControladorProfesor.getInstance().guardar(this.actual);
 		if (resultado == true && this.actual != null && this.actual.getId() > 0) {
 			pEj.jtfId.setText("" + this.actual.getId());
 			JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
@@ -234,7 +234,7 @@ public class PanelEstudiante extends JPanel {
 		int opcionElegida = JOptionPane.showOptionDialog(null, "¿Desea eliminar?", "Gestión venta de coches", 
 		        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, posiblesRespuestas, posiblesRespuestas[1]);
 	    if(opcionElegida == 0) {
-	    	ControladorEstudiante.getInstance().borrar(this.actual);
+	    	ControladorProfesor.getInstance().borrar(this.actual);
 	    }
 	}
 	

@@ -10,15 +10,8 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="profesor")
 @NamedQuery(name="Profesor.findAll", query="SELECT p FROM Profesor p")
 public class Profesor implements Serializable {
-	
-	@Override
-	public String toString() {
-		return apellido1 + " " + apellido2 + "," + nombre;
-	}
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,6 +21,8 @@ public class Profesor implements Serializable {
 	private String apellido1;
 
 	private String apellido2;
+
+	private String color;
 
 	private String direccion;
 
@@ -44,7 +39,8 @@ public class Profesor implements Serializable {
 
 	//bi-directional many-to-one association to TipologiaSexo
 	@ManyToOne
-	private TipologiaSexo tipologiaSexo;
+	@JoinColumn(name="tipologiaSexo")
+	private TipologiaSexo tipologiasexo;
 
 	//bi-directional many-to-one association to ValoracionMateria
 	@OneToMany(mappedBy="profesor")
@@ -75,6 +71,14 @@ public class Profesor implements Serializable {
 
 	public void setApellido2(String apellido2) {
 		this.apellido2 = apellido2;
+	}
+
+	public String getColor() {
+		return this.color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getDireccion() {
@@ -125,12 +129,12 @@ public class Profesor implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public TipologiaSexo getTipologiaSexo() {
-		return this.tipologiaSexo;
+	public TipologiaSexo getTipologiasexo() {
+		return this.tipologiasexo;
 	}
 
-	public void setTipologiaSexo(TipologiaSexo tipologiaSexo) {
-		this.tipologiaSexo = tipologiaSexo;
+	public void setTipologiasexo(TipologiaSexo tipologiasexo) {
+		this.tipologiasexo = tipologiasexo;
 	}
 
 	public List<ValoracionMateria> getValoracionmaterias() {
@@ -154,5 +158,12 @@ public class Profesor implements Serializable {
 
 		return valoracionmateria;
 	}
+
+	@Override
+	public String toString() {
+		return apellido1 + " " + apellido2 + "," + nombre;
+	}
+	
+	
 
 }

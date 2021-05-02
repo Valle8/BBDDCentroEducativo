@@ -3,21 +3,30 @@ package gui;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
+import model.controllers.ControladorEstudiante;
 import model.controllers.ControladorMateria;
 import model.controllers.ControladorProfesor;
 import model.controllers.ControladorTipologia;
+import model.controllers.ControladorValoracionMateria;
+import model.entities.Estudiante;
 import model.entities.Materia;
 import model.entities.Profesor;
 import model.entities.TipologiaSexo;
+import model.entities.ValoracionMateria;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -26,6 +35,9 @@ public class PanelValoracionMateria extends JPanel {
 	JComboBox<Materia> jcbMateria = new JComboBox();
 	JComboBox<Profesor> jcbProfesor = new JComboBox();
 	JScrollPane scrollPaneEstudiantes = new JScrollPane();
+	private Profesor actualProf;
+	private Materia actualMat;
+	private List<PanelScrollEstudiante> listaEstudiantes;
 	
 	/**
 	 * Create the panel.
@@ -73,6 +85,7 @@ public class PanelValoracionMateria extends JPanel {
 		JButton btnRefresca = new JButton("Refrescar estudiantes");
 		btnRefresca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				cargarFichasAlumnos();
 			}
 		});
 		GridBagConstraints gbc_btnRefresca = new GridBagConstraints();
@@ -94,6 +107,7 @@ public class PanelValoracionMateria extends JPanel {
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				guardar();
 			}
 		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
@@ -157,4 +171,54 @@ public class PanelValoracionMateria extends JPanel {
 		}
 	}
 
+	
+	private void cargarFichasAlumnos() {
+		listaEstudiantes = new ArrayList<PanelScrollEstudiante>();
+		actualMat = (Materia) jcbMateria.getSelectedItem();		
+		actualProf = (Profesor) jcbProfesor.getSelectedItem();	
+		JPanel Tarjetas = new JPanel();
+
+		for(int i =0 ;i < ControladorEstudiante.getInstance().findAll().size(); i++) {
+			Estudiante est = ControladorEstudiante.getInstance().findAll().get(i);	
+			PanelScrollEstudiante fichaEst = new PanelScrollEstudiante(est,actualMat, actualProf);
+			GridBagConstraints gbc_panelFichas = new GridBagConstraints();
+			gbc_panelFichas.gridx = 0;
+			gbc_panelFichas.gridy = i;
+			add(fichaEst,gbc_panelFichas);
+			
+			if (ControladorValoracionMateria.getInstance().findByEstudianteAndProfesorAndMateria(actualProf,actualMat, est) != null) {
+				fichaEst.jtfNota.setText("" + ControladorValoracionMateria.getInstance().findByEstudianteAndProfesorAndMateria(actualProf,actualMat, est).getValoracion());
+			} else {
+				fichaEst.jtfNota.setText("" + 0);
+			}
+			
+			Tarjetas.add(fichaEst); 
+			listaEstudiantes.add(fichaEst);	
+			scrollPaneEstudiantes.setViewportView(Tarjetas);
+			scrollPaneEstudiantes.revalidate();
+			scrollPaneEstudiantes.repaint();	
+		}
+		
+		
+
+	}
+	
+	private void guardar() {
+		for (int i = 0; i < listaEstudiantes.size(); i++) {
+			ValoracionMateria valM = new ValoracionMateria();
+			valM = ControladorValoracionMateria.getInstance().findByEstudianteAndProfesorAndMateria((Profesor) jcbProfesor.getSelectedItem(), (Materia) jcbMateria.getSelectedItem(), listaEstudiantes.get(i).getEstudiante()) ;
+			if (valM == null) {
+				valM = new ValoracionMateria();
+				valM.setId(0);
+				valM.setEstudiante(listaEstudiantes.get(i).getEstudiante());
+				valM.setMateria((Materia) jcbMateria.getSelectedItem());
+				valM.setProfesor((Profesor) jcbProfesor.getSelectedItem());
+				valM.setValoracion(Float.parseFloat(listaEstudiantes.get(i).getJtfNota().getText()));
+			} else {
+				valM.getId();
+				
+			}
+			ControladorValoracionMateria.getInstance().guardar(valM);
+		}
+	}
 }

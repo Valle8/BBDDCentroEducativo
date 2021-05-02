@@ -10,10 +10,10 @@ import javax.swing.JMenuItem;
 public class MenuBar extends JMenuBar {
 
 	public MenuBar() {
-		JMenu menuArchivo = new JMenu("Menú");
+		JMenu menuArchivo = new JMenu("Menu");
 		this.add(menuArchivo);
 		
-		String entidades[] = new String[] {"Curso", "Estudiante", "Profesor", "ValoracionMateria"};
+		String entidades[] = new String[] {"Estudiantes","Profesores", "ValoracionMateria"};
 		
 		for (int i = 0; i < entidades.length; i++) {
 			final int iFinal = i;
