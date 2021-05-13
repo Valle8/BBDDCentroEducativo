@@ -184,6 +184,11 @@ public class PanelValoracionMateriaList extends JPanel {
 		panelBotones.setLayout(gbl_panelBotones);
 		
 		JButton btnTodosI = new JButton("<<");
+		btnTodosI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				quitarTodosEstudiantes();
+			}
+		});
 		GridBagConstraints gbc_btnTodosI = new GridBagConstraints();
 		gbc_btnTodosI.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTodosI.gridx = 0;
@@ -191,6 +196,11 @@ public class PanelValoracionMateriaList extends JPanel {
 		panelBotones.add(btnTodosI, gbc_btnTodosI);
 		
 		JButton btnUnoI = new JButton("<");
+		btnUnoI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				quitarEstudiantesSeleccionados();
+			}
+		});
 		GridBagConstraints gbc_btnUnoI = new GridBagConstraints();
 		gbc_btnUnoI.insets = new Insets(0, 0, 5, 0);
 		gbc_btnUnoI.gridx = 0;
@@ -198,6 +208,11 @@ public class PanelValoracionMateriaList extends JPanel {
 		panelBotones.add(btnUnoI, gbc_btnUnoI);
 		
 		JButton btnUnoD = new JButton(">");
+		btnUnoD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				agregarEstudiantesSeleccionados();
+			}
+		});
 		GridBagConstraints gbc_btnUnoD = new GridBagConstraints();
 		gbc_btnUnoD.insets = new Insets(0, 0, 5, 0);
 		gbc_btnUnoD.gridx = 0;
@@ -205,6 +220,11 @@ public class PanelValoracionMateriaList extends JPanel {
 		panelBotones.add(btnUnoD, gbc_btnUnoD);
 		
 		JButton btnTodosD = new JButton(">>");
+		btnTodosD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				agregarTodosEstudiantes();
+			}
+		});
 		GridBagConstraints gbc_btnTodosD = new GridBagConstraints();
 		gbc_btnTodosD.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTodosD.gridx = 0;
@@ -303,6 +323,52 @@ public class PanelValoracionMateriaList extends JPanel {
 		dlmSinNota.addAll(this.estudiantes);
 	}
 	
-	
+	/**
+     * 
+     */
+    private void agregarTodosEstudiantes() {
+        for (int i = 0; i < this.dlmSinNota.size(); i++) {
+            this.dlmConNota.addElement(this.dlmSinNota.elementAt(i));
+        }
+        dlmSinNota.clear();
+    }
+    
+    /**
+     * 
+     */
+    private void quitarTodosEstudiantes() {
+        for (int i = 0; i < this.dlmConNota.size(); i++) {
+            this.dlmSinNota.addElement(this.dlmConNota.elementAt(i));
+        }
+        dlmConNota.clear();
+    }
+    
+    /**
+     * 
+     */
+    private void quitarEstudiantesSeleccionados() {
+    	for (int i = 0; i < this.listConNota.getSelectedIndices().length; i++) {
+    		this.dlmSinNota.addElement(this.dlmConNota.getElementAt(this.listConNota.getSelectedIndices()[i]));
+		}
+
+    	for (int i = this.listConNota.getSelectedIndices().length - 1; i >= 0; i--) {
+			this.dlmConNota.removeElementAt(this.listConNota.getSelectedIndices()[i]);
+		}
+    }
+    
+    private void agregarEstudiantesSeleccionados() {
+    	for (int i = 0; i < this.listSinNota.getSelectedIndices().length; i++) {
+    		this.dlmConNota.addElement(this.dlmSinNota.getElementAt(this.listSinNota.getSelectedIndices()[i]));
+		}
+
+    	for (int i = this.listSinNota.getSelectedIndices().length - 1; i >= 0; i--) {
+			this.dlmSinNota.removeElementAt(this.listSinNota.getSelectedIndices()[i]);
+		}
+    }
+    
+    private void guardar() {
+    	
+    }
+
 
 }
