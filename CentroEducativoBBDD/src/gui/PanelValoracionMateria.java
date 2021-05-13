@@ -1,224 +1,194 @@
 package gui;
 
+
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.GridBagConstraints;
+import javax.swing.JComboBox;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComboBox;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JScrollBar;
+import java.awt.Font;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import model.controllers.ControladorEstudiante;
 import model.controllers.ControladorMateria;
 import model.controllers.ControladorProfesor;
-import model.controllers.ControladorTipologia;
-import model.controllers.ControladorValoracionMateria;
 import model.entities.Estudiante;
 import model.entities.Materia;
 import model.entities.Profesor;
-import model.entities.TipologiaSexo;
-import model.entities.ValoracionMateria;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PanelValoracionMateria extends JPanel {
 
-	JComboBox<Materia> jcbMateria = new JComboBox();
-	JComboBox<Profesor> jcbProfesor = new JComboBox();
-	JScrollPane scrollPaneEstudiantes = new JScrollPane();
-	private Profesor actualProf;
-	private Materia actualMat;
-	private List<PanelScrollEstudiante> listaEstudiantes;
+	JComboBox<Profesor> jcbProfesor;
+	JComboBox<Materia> jcbMaterias;
+	List<PanelScrollEstudiante> fichasValoracion = new ArrayList<PanelScrollEstudiante>();
+	JScrollPane scrollPaneEstudiantes;
 	
 	/**
 	 * Create the panel.
 	 */
 	public PanelValoracionMateria() {
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
+		setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblProfesor = new JLabel("Profesor");
-		GridBagConstraints gbc_lblProfesor = new GridBagConstraints();
-		gbc_lblProfesor.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblProfesor.insets = new Insets(0, 0, 5, 5);
-		gbc_lblProfesor.gridx = 0;
-		gbc_lblProfesor.gridy = 0;
-		add(lblProfesor, gbc_lblProfesor);
+		JPanel panel = new JPanel();
+		add(panel, BorderLayout.NORTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
 		
-		jcbProfesor = new JComboBox();
+		JLabel lblNewLabel = new JLabel("Profesor:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 0;
+		panel.add(lblNewLabel, gbc_lblNewLabel);
+		
+		jcbProfesor = new JComboBox<Profesor>();
 		GridBagConstraints gbc_jcbProfesor = new GridBagConstraints();
-		gbc_jcbProfesor.insets = new Insets(0, 0, 5, 5);
+		gbc_jcbProfesor.insets = new Insets(0, 0, 5, 0);
 		gbc_jcbProfesor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jcbProfesor.gridx = 1;
 		gbc_jcbProfesor.gridy = 0;
-		add(jcbProfesor, gbc_jcbProfesor);
+		panel.add(jcbProfesor, gbc_jcbProfesor);
 		
-		JLabel lblMateria = new JLabel("Materia");
-		GridBagConstraints gbc_lblMateria = new GridBagConstraints();
-		gbc_lblMateria.anchor = GridBagConstraints.EAST;
-		gbc_lblMateria.insets = new Insets(0, 0, 5, 5);
-		gbc_lblMateria.gridx = 0;
-		gbc_lblMateria.gridy = 1;
-		add(lblMateria, gbc_lblMateria);
+		JLabel lblNewLabel_1 = new JLabel("Materia");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 0;
+		gbc_lblNewLabel_1.gridy = 1;
+		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		jcbMateria = new JComboBox();
-		GridBagConstraints gbc_jcbMateria = new GridBagConstraints();
-		gbc_jcbMateria.fill = GridBagConstraints.HORIZONTAL;
-		gbc_jcbMateria.insets = new Insets(0, 0, 5, 5);
-		gbc_jcbMateria.gridx = 1;
-		gbc_jcbMateria.gridy = 1;
-		add(jcbMateria, gbc_jcbMateria);
+		jcbMaterias = new JComboBox<Materia>();
+		GridBagConstraints gbc_jcbMaterias = new GridBagConstraints();
+		gbc_jcbMaterias.insets = new Insets(0, 0, 5, 0);
+		gbc_jcbMaterias.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jcbMaterias.gridx = 1;
+		gbc_jcbMaterias.gridy = 1;
+		panel.add(jcbMaterias, gbc_jcbMaterias);
 		
-		JButton btnRefresca = new JButton("Refrescar estudiantes");
-		btnRefresca.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cargarFichasAlumnos();
+		JButton btnRefrescar = new JButton("Refrescar estudiantes");
+		btnRefrescar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarEstudiantes();
 			}
 		});
-		GridBagConstraints gbc_btnRefresca = new GridBagConstraints();
-		gbc_btnRefresca.anchor = GridBagConstraints.EAST;
-		gbc_btnRefresca.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRefresca.gridx = 1;
-		gbc_btnRefresca.gridy = 2;
-		add(btnRefresca, gbc_btnRefresca);
+		GridBagConstraints gbc_btnRefrescar = new GridBagConstraints();
+		gbc_btnRefrescar.anchor = GridBagConstraints.EAST;
+		gbc_btnRefrescar.gridwidth = 2;
+		gbc_btnRefrescar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnRefrescar.gridx = 0;
+		gbc_btnRefrescar.gridy = 2;
+		panel.add(btnRefrescar, gbc_btnRefrescar);
 		
-		scrollPaneEstudiantes = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneEstudiantes = new GridBagConstraints();
-		gbc_scrollPaneEstudiantes.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPaneEstudiantes.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneEstudiantes.gridx = 0;
-		gbc_scrollPaneEstudiantes.gridy = 3;
-		gbc_scrollPaneEstudiantes.gridwidth = 2;
-		add(scrollPaneEstudiantes, gbc_scrollPaneEstudiantes);
+		JPanel panel_1 = new JPanel();
+		add(panel_1, BorderLayout.SOUTH);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[]{0, 0};
+		gbl_panel_1.rowHeights = new int[]{0, 0};
+		gbl_panel_1.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel_1.setLayout(gbl_panel_1);
 		
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				guardar();
+			public void actionPerformed(ActionEvent e) {
+				guardaValoraciones();
 			}
 		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
-		gbc_btnGuardar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnGuardar.weightx = 1.0;
 		gbc_btnGuardar.anchor = GridBagConstraints.EAST;
-		gbc_btnGuardar.gridx = 1;
-		gbc_btnGuardar.gridy = 4;
-		add(btnGuardar, gbc_btnGuardar);
+		gbc_btnGuardar.gridx = 0;
+		gbc_btnGuardar.gridy = 0;
+		panel_1.add(btnGuardar, gbc_btnGuardar);
 		
-		cargarDatosMateria();
-		cargarDatosProfesor();
+		scrollPaneEstudiantes = new JScrollPane();
+		add(scrollPaneEstudiantes, BorderLayout.CENTER);
+
+		
+		cargarMaterias();
+		cargarProfesores();
 	}
-	
-	public Materia getMateria() {
-		return  (Materia) this.jcbMateria.getSelectedItem();
-	}
-
-
-
-	public void setMateria(Materia materia) {
-        for (int i = 0; i < this.jcbMateria.getItemCount(); i++) {
-            if (materia.getId() == this.jcbMateria.getItemAt(i).getId()) {
-                this.jcbMateria.setSelectedIndex(i);
-            }
-        }
-        this.jcbMateria.setSelectedItem(materia);
-    }
 	
 	/**
 	 * 
 	 */
-	private void cargarDatosMateria() {
+	private void cargarMaterias() {
 		List<Materia> materias = ControladorMateria.getInstance().findAll();
-		for (Materia f : materias) {
-			this.jcbMateria.addItem(f);
+		for (Materia m : materias) {
+			this.jcbMaterias.addItem(m);
 		}
 	}
-	
-	public Profesor getProfesor() {
-		return  (Profesor) this.jcbProfesor.getSelectedItem();
-	}
-
-
-
-	public void setProfesor(Profesor profesor) {
-        for (int i = 0; i < this.jcbProfesor.getItemCount(); i++) {
-            if (profesor.getId() == this.jcbProfesor.getItemAt(i).getId()) {
-                this.jcbProfesor.setSelectedIndex(i);
-            }
-        }
-        this.jcbProfesor.setSelectedItem(profesor);
-    }
 	
 	/**
 	 * 
 	 */
-	private void cargarDatosProfesor() {
+	private void cargarProfesores() {
 		List<Profesor> profesores = ControladorProfesor.getInstance().findAll();
-		for (Profesor f : profesores) {
-			this.jcbProfesor.addItem(f);
+		for (Profesor p : profesores) {
+			this.jcbProfesor.addItem(p);
 		}
 	}
-
 	
-	private void cargarFichasAlumnos() {
-		listaEstudiantes = new ArrayList<PanelScrollEstudiante>();
-		actualMat = (Materia) jcbMateria.getSelectedItem();		
-		actualProf = (Profesor) jcbProfesor.getSelectedItem();	
-		JPanel Tarjetas = new JPanel();
-
-		for(int i =0 ;i < ControladorEstudiante.getInstance().findAll().size(); i++) {
-			Estudiante est = ControladorEstudiante.getInstance().findAll().get(i);	
-			PanelScrollEstudiante fichaEst = new PanelScrollEstudiante(est,actualMat, actualProf);
-			GridBagConstraints gbc_panelFichas = new GridBagConstraints();
-			gbc_panelFichas.gridx = 0;
-			gbc_panelFichas.gridy = i;
-			add(fichaEst,gbc_panelFichas);
-			
-			if (ControladorValoracionMateria.getInstance().findByEstudianteAndProfesorAndMateria(actualProf,actualMat, est) != null) {
-				fichaEst.jtfNota.setText("" + ControladorValoracionMateria.getInstance().findByEstudianteAndProfesorAndMateria(actualProf,actualMat, est).getValoracion());
-			} else {
-				fichaEst.jtfNota.setText("" + 0);
-			}
-			
-			Tarjetas.add(fichaEst); 
-			listaEstudiantes.add(fichaEst);	
-			scrollPaneEstudiantes.setViewportView(Tarjetas);
-			scrollPaneEstudiantes.revalidate();
-			scrollPaneEstudiantes.repaint();	
+	/**
+	 * 
+	 */
+	private void cargarEstudiantes () {
+		// Obtengo un listado de estudiantes y el profesor y materia seleccionada
+		List<Estudiante> estudiantes = ControladorEstudiante.getInstance().findAll();
+		Profesor profSeleccionado = (Profesor) this.jcbProfesor.getSelectedItem();
+		Materia matSeleccionada = (Materia) this.jcbMaterias.getSelectedItem();
+		
+		// Creo todas las fichas de valoración de cada estudiante
+		this.fichasValoracion.clear();
+		for (Estudiante e : estudiantes) {
+			this.fichasValoracion.add(new PanelScrollEstudiante(profSeleccionado, matSeleccionada, e));
 		}
 		
+		// Creo un panel, con BoxLayout vertical y se lo asigno al scrollpane
+		JPanel pnl = new JPanel();
+		pnl.setLayout(new GridBagLayout());
 		
-
+		for (int i = 0; i < this.fichasValoracion.size(); i++) {
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.gridy = i;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 1;
+			pnl.add(this.fichasValoracion.get(i), c);
+		}
+		
+		// Finalmente asigno el JPanel al scrollpane
+		this.scrollPaneEstudiantes.setViewportView(pnl);
+		this.scrollPaneEstudiantes.revalidate();
+		this.scrollPaneEstudiantes.repaint();
 	}
 	
-	private void guardar() {
-		for (int i = 0; i < listaEstudiantes.size(); i++) {
-			ValoracionMateria valM = new ValoracionMateria();
-			valM = ControladorValoracionMateria.getInstance().findByEstudianteAndProfesorAndMateria((Profesor) jcbProfesor.getSelectedItem(), (Materia) jcbMateria.getSelectedItem(), listaEstudiantes.get(i).getEstudiante()) ;
-			if (valM == null) {
-				valM = new ValoracionMateria();
-				valM.setId(0);
-				valM.setEstudiante(listaEstudiantes.get(i).getEstudiante());
-				valM.setMateria((Materia) jcbMateria.getSelectedItem());
-				valM.setProfesor((Profesor) jcbProfesor.getSelectedItem());
-				valM.setValoracion(Float.parseFloat(listaEstudiantes.get(i).getJtfNota().getText()));
-			} else {
-				valM.getId();
-				
-			}
-			ControladorValoracionMateria.getInstance().guardar(valM);
+	
+	/**
+	 * 
+	 */
+	private void guardaValoraciones () {
+		for (PanelScrollEstudiante f : this.fichasValoracion) {
+			f.guardaValoracion();
 		}
+		JOptionPane.showMessageDialog(null, "Valoraciones guardadas correctamente");
 	}
 }
