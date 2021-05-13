@@ -12,6 +12,12 @@ import java.util.List;
 @Entity
 @NamedQuery(name="Estudiante.findAll", query="SELECT e FROM Estudiante e")
 public class Estudiante implements Serializable {
+	
+	@Override
+	public String toString() {
+		return apellido1 + " " + apellido2 + "," + nombre;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

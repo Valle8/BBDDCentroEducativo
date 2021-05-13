@@ -151,7 +151,33 @@ public class ControladorEstudiante {
 		return list;
 	}
 
+	public List<Estudiante> findByProMatNot(int idPro, int idMat, float idNot) {
+        List<Estudiante> lista = null; 
+
+        EntityManager em = factory.createEntityManager();
+        Query q = em.createNativeQuery("Select * from centroeducativo.estudiante join valoracionmateria on estudiante.id=idEstudiante where idProfesor = ? and idMateria = ? and valoracion = ?", Estudiante.class);
+        q.setParameter(1, idPro);
+        q.setParameter(2, idMat);
+        q.setParameter(3, idNot);
+        lista = q.getResultList();
+        em.close();
+
+        return lista;
+    }
 	
+    public List<Estudiante> findLeftJoin(int idPro, int idMat, float idNot) {
+        List<Estudiante> lista = null; 
+
+        EntityManager em = factory.createEntityManager();
+        Query q = em.createNativeQuery("select * from estudiante E left join (select idEstudiante from valoracionmateria where idProfesor=? and idMateria=? and valoracion=?) T on E.id=T.idEstudiante where T.idEstudiante is null", Estudiante.class);
+        q.setParameter(1, idPro);
+        q.setParameter(2, idMat);
+        q.setParameter(3, idNot);
+        lista = (List<Estudiante>) q.getResultList();
+        em.close();
+
+        return lista;
+    }
 	
 
 }
