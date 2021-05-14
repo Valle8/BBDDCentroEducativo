@@ -18,12 +18,12 @@ import model.controllers.ControladorEstudiante;
 import model.controllers.ControladorMateria;
 import model.controllers.ControladorProfesor;
 import model.controllers.ControladorTipologia;
+import model.controllers.ControladorValoracionMateria;
 import model.entities.Estudiante;
 import model.entities.Materia;
 import model.entities.Profesor;
 import model.entities.TipologiaSexo;
-
-
+import model.entities.ValoracionMateria;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -124,6 +124,7 @@ public class PanelValoracionMateriaList extends JPanel {
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				guardar();
 			}
 		});
 		
@@ -226,7 +227,7 @@ public class PanelValoracionMateriaList extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_btnTodosD = new GridBagConstraints();
-		gbc_btnTodosD.insets = new Insets(0, 0, 5, 0);
+		gbc_btnTodosD.insets =new Insets(0, 0, 5, 0);
 		gbc_btnTodosD.gridx = 0;
 		gbc_btnTodosD.gridy = 4;
 		panelBotones.add(btnTodosD, gbc_btnTodosD);
@@ -267,7 +268,7 @@ public class PanelValoracionMateriaList extends JPanel {
     }
 	
 	/**
-	 * 
+	 *  carga el jcb materias
 	 */
 	private void cargarDatosMateria() {
 		List<Materia> materias = ControladorMateria.getInstance().findAll();
@@ -292,7 +293,7 @@ public class PanelValoracionMateriaList extends JPanel {
     }
 	
 	/**
-	 * 
+	 *  cargar el jcb profesores
 	 */
 	private void cargarDatosProfesor() {
 		List<Profesor> profesores = ControladorProfesor.getInstance().findAll();
@@ -302,7 +303,7 @@ public class PanelValoracionMateriaList extends JPanel {
 	}
 	
 	/**
-	 * 
+	 * carga el jcb notas
 	 */
 	private void cargarNota() {
 		List<Float> numeros = new ArrayList<Float>();
@@ -312,61 +313,100 @@ public class PanelValoracionMateriaList extends JPanel {
 		 }
 	}
 
-
+	/**
+	 * añadir estudiantes
+	 */
 	private void refrescarEstudiantes () {
+		//Limpiamos las listas
 		dlmSinNota.removeAllElements();
 		dlmConNota.removeAllElements();
+		//Encontramos aquellos con nota y los añadimos a la lista de la derecha
 		estudiantes  = ControladorEstudiante.getInstance().findByProMatNot(((Profesor)jcbProfesor.getSelectedItem()).getId(),((Materia) jcbMateria.getSelectedItem()).getId(),(Float)jcbNota.getSelectedItem());
 		dlmConNota.addAll(this.estudiantes);
+		//Limpio mi lista para reutilizarla
 		estudiantes.clear();
+		//Encontramos aquellos sin nota y los añadimos a la lista de la izquierda
 		estudiantes  = ControladorEstudiante.getInstance().findLeftJoin(((Profesor)jcbProfesor.getSelectedItem()).getId(),((Materia) jcbMateria.getSelectedItem()).getId(),(Float)jcbNota.getSelectedItem());
 		dlmSinNota.addAll(this.estudiantes);
 	}
 	
 	/**
-     * 
+     * Estudiantes de izquierda a derecha 
      */
     private void agregarTodosEstudiantes() {
+    	//Copiamos todos los estudiantes de la lista de la izquierda en la lista de la derecha
         for (int i = 0; i < this.dlmSinNota.size(); i++) {
             this.dlmConNota.addElement(this.dlmSinNota.elementAt(i));
         }
+        //Limpiamos la lista de la izquierda
         dlmSinNota.clear();
     }
     
     /**
-     * 
+     * Estudiantes de derecha a izquierda
      */
     private void quitarTodosEstudiantes() {
+    	//Copiamos todos los estudiantes de la lista de la derecha en la lista de la izquierda
         for (int i = 0; i < this.dlmConNota.size(); i++) {
             this.dlmSinNota.addElement(this.dlmConNota.elementAt(i));
         }
+        //Limpiamos la lista de la derecha
         dlmConNota.clear();
     }
     
     /**
-     * 
+     * Estudiantes de derecha a izquierda con seleccion
      */
     private void quitarEstudiantesSeleccionados() {
+    	//Recorremos la lista de la derecha y copiamos los seleccionados en la lista de la izquierda
     	for (int i = 0; i < this.listConNota.getSelectedIndices().length; i++) {
     		this.dlmSinNota.addElement(this.dlmConNota.getElementAt(this.listConNota.getSelectedIndices()[i]));
 		}
-
+    	//Borramos los que han sido copiados
     	for (int i = this.listConNota.getSelectedIndices().length - 1; i >= 0; i--) {
 			this.dlmConNota.removeElementAt(this.listConNota.getSelectedIndices()[i]);
 		}
     }
     
+    /**
+     * Estudiantes de izquierda a derecha con seleccion
+     */	
     private void agregarEstudiantesSeleccionados() {
+    	//Recorremos la lista de la izquierda y copiamos los seleccionados en la lista de la  derecha
     	for (int i = 0; i < this.listSinNota.getSelectedIndices().length; i++) {
     		this.dlmConNota.addElement(this.dlmSinNota.getElementAt(this.listSinNota.getSelectedIndices()[i]));
 		}
-
+    	//Borramos los que han sido copiados
     	for (int i = this.listSinNota.getSelectedIndices().length - 1; i >= 0; i--) {
 			this.dlmSinNota.removeElementAt(this.listSinNota.getSelectedIndices()[i]);
 		}
     }
     
     private void guardar() {
+    	//Cogemos los valores para formar la valoracion materia 
+    	ValoracionMateria vm = new ValoracionMateria();
+    	Profesor p = (Profesor) jcbProfesor.getSelectedItem();
+    	Materia m = (Materia) jcbMateria.getSelectedItem();
+    	Float n = (Float) jcbNota.getSelectedItem();
+    	//Buscamos en el dml de los seleccionados si existe una ValoracionMateria con cada uno de esos valores
+    	for (int i = 0; i < dlmConNota.getSize(); i++) {
+    		Estudiante e = dlmConNota.getElementAt(i);
+    		vm = ControladorValoracionMateria.getInstance().findByMateriaAndProfesorAndEstudiante(m, p, e);
+    		//Si no existe lo creamos
+			if (vm==null) {
+				vm = new ValoracionMateria();
+				vm.setEstudiante(e);
+				vm.setMateria(m);
+				vm.setProfesor(p);
+				vm.setValoracion(n);
+			} 
+			//Si existe solo le ponemos la nota
+			else {
+				vm.setValoracion(n);
+			}
+			//Guardamos
+			ControladorValoracionMateria.getInstance().save(vm);
+		}
     	
     }
 

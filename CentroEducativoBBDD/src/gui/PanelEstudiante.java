@@ -158,7 +158,7 @@ public class PanelEstudiante extends JPanel {
 			pEj.setEmail(this.actual.getEmail());
 			pEj.setNombre(this.actual.getNombre());
 			pEj.setTelefono(this.actual.getTelefono());
-			pEj.setSexo(this.actual.getTipologiasexo());
+			pEj.setSexo(this.actual.getTipologiaSexo());
 			pEj.setImagen(this.actual.getImagen());
 			pEj.setColor(this.actual.getColor());
 			if (this.actual.getColor() != null) {
@@ -183,7 +183,7 @@ public class PanelEstudiante extends JPanel {
 			this.actual.setEmail(pEj.getEmail());
 			this.actual.setTelefono(pEj.getTelefono());
 			this.actual.setNombre(pEj.getNombre());
-			this.actual.setTipologiasexo(pEj.getSexo());
+			this.actual.setTipologiaSexo(pEj.getSexo());
 			this.actual.setImagen(pEj.getImagen());
 			this.actual.setColor(pEj.getColor());
 	}

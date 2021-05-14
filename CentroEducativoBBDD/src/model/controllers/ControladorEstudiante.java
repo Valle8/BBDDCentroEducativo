@@ -151,6 +151,13 @@ public class ControladorEstudiante {
 		return list;
 	}
 
+	/**
+	 * 
+	 * @param idPro
+	 * @param idMat
+	 * @param idNot
+	 * @return
+	 */
 	public List<Estudiante> findByProMatNot(int idPro, int idMat, float idNot) {
         List<Estudiante> lista = null; 
 
@@ -165,6 +172,13 @@ public class ControladorEstudiante {
         return lista;
     }
 	
+	/**
+	 * 
+	 * @param idPro
+	 * @param idMat
+	 * @param idNot
+	 * @return
+	 */
     public List<Estudiante> findLeftJoin(int idPro, int idMat, float idNot) {
         List<Estudiante> lista = null; 
 

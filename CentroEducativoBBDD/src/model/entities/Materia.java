@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="materia")
 @NamedQuery(name="Materia.findAll", query="SELECT m FROM Materia m")
 public class Materia implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -89,9 +90,7 @@ public class Materia implements Serializable {
 
 	@Override
 	public String toString() {
-		return nombre;
+		return  nombre;
 	}
-	
-	
 
 }
