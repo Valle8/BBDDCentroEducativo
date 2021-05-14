@@ -6,11 +6,10 @@ import java.util.List;
 
 
 /**
- * The persistent class for the tipologiaSexo database table.
+ * The persistent class for the tipologiasexo database table.
  * 
  */
 @Entity
-@Table(name="tipologiaSexo")
 @NamedQuery(name="TipologiaSexo.findAll", query="SELECT t FROM TipologiaSexo t")
 public class TipologiaSexo implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,14 +18,14 @@ public class TipologiaSexo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
-	private String descripci贸n;
+	private String descripci髇;
 
 	//bi-directional many-to-one association to Estudiante
-	@OneToMany(mappedBy="tipologiaSexo")
+	@OneToMany(mappedBy="tipologiasexo")
 	private List<Estudiante> estudiantes;
 
 	//bi-directional many-to-one association to Profesor
-	@OneToMany(mappedBy="tipologiaSexo")
+	@OneToMany(mappedBy="tipologiasexo")
 	private List<Profesor> profesors;
 
 	public TipologiaSexo() {
@@ -40,12 +39,12 @@ public class TipologiaSexo implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescripci贸n() {
-		return this.descripci贸n;
+	public String getDescripci髇() {
+		return this.descripci髇;
 	}
 
-	public void setDescripci贸n(String descripci贸n) {
-		this.descripci贸n = descripci贸n;
+	public void setDescripci髇(String descripci髇) {
+		this.descripci髇 = descripci髇;
 	}
 
 	public List<Estudiante> getEstudiantes() {
@@ -58,14 +57,14 @@ public class TipologiaSexo implements Serializable {
 
 	public Estudiante addEstudiante(Estudiante estudiante) {
 		getEstudiantes().add(estudiante);
-		estudiante.setTipologiaSexo(this);
+		estudiante.setTipologiasexo(this);
 
 		return estudiante;
 	}
 
 	public Estudiante removeEstudiante(Estudiante estudiante) {
 		getEstudiantes().remove(estudiante);
-		estudiante.setTipologiaSexo(null);
+		estudiante.setTipologiasexo(null);
 
 		return estudiante;
 	}
@@ -80,21 +79,21 @@ public class TipologiaSexo implements Serializable {
 
 	public Profesor addProfesor(Profesor profesor) {
 		getProfesors().add(profesor);
-		profesor.setTipologiaSexo(this);
+		profesor.setTipologiasexo(this);
 
 		return profesor;
 	}
 
 	public Profesor removeProfesor(Profesor profesor) {
 		getProfesors().remove(profesor);
-		profesor.setTipologiaSexo(null);
+		profesor.setTipologiasexo(null);
 
 		return profesor;
 	}
 
 	@Override
 	public String toString() {
-		return descripci贸n;
+		return descripci髇;
 	}
 
 }

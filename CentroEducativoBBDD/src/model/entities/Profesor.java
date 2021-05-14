@@ -10,7 +10,6 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="profesor")
 @NamedQuery(name="Profesor.findAll", query="SELECT p FROM Profesor p")
 public class Profesor implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -40,7 +39,8 @@ public class Profesor implements Serializable {
 
 	//bi-directional many-to-one association to TipologiaSexo
 	@ManyToOne
-	private TipologiaSexo tipologiaSexo;
+	@JoinColumn(name="tipologiaSexo")
+	private TipologiaSexo tipologiasexo;
 
 	//bi-directional many-to-one association to ValoracionMateria
 	@OneToMany(mappedBy="profesor")
@@ -129,12 +129,12 @@ public class Profesor implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public TipologiaSexo getTipologiaSexo() {
-		return this.tipologiaSexo;
+	public TipologiaSexo getTipologiasexo() {
+		return this.tipologiasexo;
 	}
 
-	public void setTipologiaSexo(TipologiaSexo tipologiaSexo) {
-		this.tipologiaSexo = tipologiaSexo;
+	public void setTipologiasexo(TipologiaSexo tipologiasexo) {
+		this.tipologiasexo = tipologiasexo;
 	}
 
 	public List<ValoracionMateria> getValoracionmaterias() {
@@ -158,7 +158,7 @@ public class Profesor implements Serializable {
 
 		return valoracionmateria;
 	}
-
+	
 	@Override
 	public String toString() {
 		return apellido1 + " " + apellido2 + "," + nombre;
